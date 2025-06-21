@@ -206,7 +206,13 @@ cython_debug/
 *.prj
 *.qpj
 *.gpkg
-*.geojson
 *.sqlite
 *.csv
 *.zip
+
+# Ignore raw or generated geojson
+data/raw/*.geojson
+data/intermediate/*.geojson
+
+# But keep cleaned/exported ones
+!data/final/*.geojson
