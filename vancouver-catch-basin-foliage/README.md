@@ -1,6 +1,8 @@
 # Week 1 – QGIS Basics
 
-Practiced core GIS concepts using QGIS.
+Practiced core GIS concepts using QGIS. 
+
+The goal is to identify catch basins with high nearby tree density as potential sites for higher maintenance needs due to clogging.
 
 ## What I Did
 - Installed QGIS and explored the interface
