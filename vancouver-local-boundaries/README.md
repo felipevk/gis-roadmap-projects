@@ -11,7 +11,7 @@ The goal is highlight the divisions of the city of the Vancouver while highlight
 - Added formatted labels displaying each division and its area value
 
 ## Map Preview
-![Vancouver Local Boundaries](map layout.png)
+![Vancouver Local Boundaries](map-layout.png)
 
 ## Skills Practiced
 - Vector data handling
