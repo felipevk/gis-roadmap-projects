@@ -9,6 +9,7 @@ The goal is to categorize each zone by its average elevation.
 - Loaded zone boundary data
 - Used Zonal Statistics to calculate the average, min and max height of each zone in the polygon layer
 - Displayed average height using graded symbology
+- Used Layout Loader templates
 
 ## Map Preview
 ![Vancouver Zone Mean Elevation](print.png)
