@@ -2,7 +2,7 @@
 
 Practiced using QGIS to work with Raster Data. 
 
-The goal is to categorize each zone by its average elevation.
+The goal is to categorize each zone by its average elevation. As an extra I also added hillshade visualization to the elevation model.
 
 ## What I Did
 - Downloaded digital elevation model (https://opendata.vancouver.ca/explore/dataset/digital-elevation-model/information/)
