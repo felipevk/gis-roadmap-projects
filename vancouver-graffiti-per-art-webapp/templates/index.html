@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>    
+     fetch('/data')
+        .then(res => res.json())
+        .then(geojsonData => {
+            const graffitiPerArtLayer = L.geoJSON(
+                geojsonData["graffitiPerPublicArt"],
+                { 
+                    onEachFeature : function(feature,layer)
+                    {
+                        layer.bindPopup(
+                            "<p style=\"text-align: center;\"><b>" + feature.properties.name + "</b></p>" +
+                            "<p><b>Graffiti: </b>" + feature.properties.graffiti + "</p>" +
+                            "<p><b>Public art: </b>" + feature.properties.art + "</p>" +
+                            "<p><b>Graffiti per art pieces: </b>" + feature.properties.graffitiPerArt + "</p>" 
+                        );
+                        layer.bindTooltip(feature.properties.name);
+                    },
+                    style : function(feature)
+                    {
+                        return {
+                            fillColor:feature.properties.color,
+                            weight: 1,
+                            color: 'gray',
+                            fillOpacity: 0.7
+                        };
+                    }
+                }
+            );
+            const artLayer = L.geoJSON(
+                geojsonData["publicArt"],
+                {
+                    onEachFeature : function(feature,layer)
+                    {
+                        layer.bindPopup(
+                            "<p style=\"text-align: center;\"><b>" + feature.properties.name + "</b></p>" +
+                            "<p><b>Type: </b>" + feature.properties.type + "</p>" +
+                            "<p><b>Status: </b>" + feature.properties.status + "</p>"
+                        );
+                    }
+                }
+            );
+            
+            overlayGroup = L.layerGroup([graffitiPerArtLayer, artLayer])
+            overlayNames = {
+                "Areas": graffitiPerArtLayer,
+                "Public Art": artLayer
+            };
+
+            osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            });
+
+            var map = L.map('map', {
+                center: [39.73, -104.99],
+                zoom: 15,
+                layers: [osm, overlayGroup]
+            });
+            map.fitBounds(graffitiPerArtLayer.getBounds());
+            var layerControl = L.control.layers({},overlayNames).addTo(map);
+            map.removeLayer(artLayer)
+    });
+</script>
