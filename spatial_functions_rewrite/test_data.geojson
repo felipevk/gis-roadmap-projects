@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Zone A" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [0.0, 0.0],
+            [0.0, 5.0],
+            [5.0, 5.0],
+            [5.0, 0.0],
+            [0.0, 0.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Zone B" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [6.0, 1.0],
+            [6.0, 4.0],
+            [9.0, 4.0],
+            [9.0, 1.0],
+            [6.0, 1.0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "label": "Point 1 (inside A)" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.5, 2.5]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "label": "Point 2 (outside all)" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.0, 2.0]
+      }
+    }
+  ]
+}
