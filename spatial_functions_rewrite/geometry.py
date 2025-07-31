@@ -49,20 +49,28 @@ def pointIntersectsAABB(p, box):
 
 def aabbIntersectsAABB(a, b):
     return (
-        a.x <= b.x + b.w and
+        ( a.x <= b.x + b.w and
         a.x + a.w >= b.x and
         a.y <= b.y + b.h and
-        a.y + a.h >= b.y
+        a.y + a.h >= b.y ) or
+        ( b.x <= a.x + a.w and
+        b.x + b.w >= a.x and
+        b.y <= a.y + a.h and
+        b.y + b.h >= a.y )
     )
 
 def aabbFromPolygon(polygon):
     aabb = AABB(float('inf'), float('inf'), 0.0, 0.0)
+    maxX, maxY = 0,0
 
     for edge in polygon.edges:
         aabb.x = edge.x if edge.x < aabb.x else aabb.x
         aabb.y = edge.y if edge.y < aabb.y else aabb.y
-        aabb.w = edge.x - aabb.x if edge.x - aabb.x > aabb.w else aabb.w
-        aabb.h = edge.y - aabb.y if edge.y - aabb.y > aabb.h else aabb.h
+        maxX = edge.x if edge.x > maxX else maxX
+        maxY = edge.y if edge.y > maxY else maxY
+    
+    aabb.w = maxX - aabb.x
+    aabb.h = maxY - aabb.y
     return aabb
 
 def rayFromPointIntersectsLine(point, line):
@@ -85,16 +93,7 @@ def rayFromPointIntersectsLine(point, line):
     # no need to check if u > 1 since it's an infinite ray to the right
     return t >= 0 and t <= 1 and u >= 0
 
-def pointIntersectsPolygon(point, polygon):
-    if len(polygon.edges) < 3:
-        return False
-
-    # aabb collision filter
-    aabb = aabbFromPolygon(polygon)
-    if not pointIntersectsAABB(point, aabb):
-        return False
-
-    # raycast
+def countRaycastHits(point, polygon):
     hits = 0
     # zip creates pairs between 2 groups,
     # in this case, grabs an element from the original list and pairs
@@ -104,5 +103,15 @@ def pointIntersectsPolygon(point, polygon):
         edgeMin, edgeMax = sorted([vert1, vert2], key=lambda p: p.x)
         hits = hits + 1 if rayFromPointIntersectsLine(point, Line(edgeMin, edgeMax)) else hits
 
-    return hits % 2 != 0
+    return hits
 
+def pointIntersectsPolygon(point, polygon):
+    if len(polygon.edges) < 3:
+        return False
+
+    # aabb collision filter
+    aabb = aabbFromPolygon(polygon)
+    if not pointIntersectsAABB(point, aabb):
+        return False
+
+    return countRaycastHits(point, polygon) % 2 != 0
